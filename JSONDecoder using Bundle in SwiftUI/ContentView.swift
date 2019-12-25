@@ -8,14 +8,34 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+    
+    var person : [Person] = Bundle.main.decode("convertcsv.json")
+    
+    @State var searchTerm = ""
+    
     var body: some View {
-        Text("Hello World")
+        
+        VStack{
+            
+         SearchBarRepresent(text: $searchTerm)
+            
+            List(self.person.filter{ value in
+            
+                self.searchTerm.isEmpty ? true : value.Name.localizedCaseInsensitiveContains(self.searchTerm)
+                
+                })
+            { value in
+            
+                Text(value.Name)
+        }
     }
+}
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(searchTerm: "")
     }
 }
